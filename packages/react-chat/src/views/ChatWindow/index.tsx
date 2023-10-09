@@ -51,6 +51,7 @@ const ChatWindow: React.FC<ChatConfig & { assistant: Assistant; session: Session
     runtime.register({
       canHandle:({type})=>type==='schedule_meeting',
       handle:({context},trace)=>{
+        context.messages.push({type:"text",payload:"Hello From Me"})
         context.messages.push({type:CALENDAR_WIDGET,payload:JSON.parse(trace.payload)['url']} as any);
         return context;
       },
