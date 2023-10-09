@@ -43,6 +43,19 @@ export interface SystemMessageProps extends React.PropsWithChildren {
   feedback?: FeedbackProps | undefined;
 }
 
+const CALENDAR_WIDGET='calendly_widget';
+
+const Calendar_Widget: React.FC<{url:any}> = ({url})=>{
+  return (
+      <div style={{height:"300px",padding:"10px"}}>
+          <iframe src={url} style={{width:"100%",border:"none",overflow:"hidden",height:"300px"}} id='L7Lz4xhfeYA5OsTV0wwv_1695957160540'></iframe>
+          <br></br>
+        <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
+      </div>
+    );
+};
+
+
 const SystemMessage: React.FC<SystemMessageProps> = ({ avatar, feedback, timestamp, message, withImage, children }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HTMLSpanElement>(null);
@@ -61,6 +74,7 @@ const SystemMessage: React.FC<SystemMessageProps> = ({ avatar, feedback, timesta
             match(message)
               .with({ type: MessageType.TEXT }, ({ text }) => <Text text={text} />)
               .with({ type: MessageType.IMAGE }, ({ url }) => <Image image={url} />)
+              .with({type:CALENDAR_WIDGET as any},(payload)=>{ return <Calendar_Widget url={payload["payload" as any]} />})
               .with({ type: MessageType.CARD }, (props) => <Card {...R.omit(props, ['type'])} />)
               .with({ type: MessageType.CAROUSEL }, (props) => (
                 <Carousel {...R.omit(props, ['type'])} containerRef={containerRef} controlsRef={controlsRef} />

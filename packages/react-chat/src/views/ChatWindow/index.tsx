@@ -15,16 +15,6 @@ import { sendMessage } from './utils';
 
 const CALENDAR_WIDGET='calendly_widget';
 
-const Calendar_Widget: React.FC<{url:any}> = ({url})=>{
-  return (
-      <div style={{height:"300px",padding:"10px"}}>
-          <iframe src={url} style={{width:"100%",border:"none",overflow:"hidden",height:"300px"}} id='L7Lz4xhfeYA5OsTV0wwv_1695957160540'></iframe>
-          <br></br>
-        <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
-      </div>
-    );
-};
-
 const ChatWindow: React.FC<ChatConfig & { assistant: Assistant; session: SessionOptions }> = ({
   assistant,
   versionID,
@@ -51,7 +41,6 @@ const ChatWindow: React.FC<ChatConfig & { assistant: Assistant; session: Session
     runtime.register({
       canHandle:({type})=>type==='schedule_meeting',
       handle:({context},trace)=>{
-        context.messages.push({type:"text",payload:"Hello From Me"})
         context.messages.push({type:CALENDAR_WIDGET,payload:JSON.parse(trace.payload)['url']} as any);
         return context;
       },
@@ -97,7 +86,6 @@ const ChatWindow: React.FC<ChatConfig & { assistant: Assistant; session: Session
           {runtime.session.turns.map((turn, turnIndex) =>
             match(turn)
               .with({ type: TurnType.USER }, ({ id, ...props }) => <UserResponse {...R.omit(props, ['type'])} key={id} />)
-              .with({type:CALENDAR_WIDGET as any},(payload)=>{ return <Calendar_Widget url={payload["payload" as any]} />})
               .with({ type: TurnType.SYSTEM }, ({ id, ...props }) => (
                 <SystemResponse
                   key={id}
