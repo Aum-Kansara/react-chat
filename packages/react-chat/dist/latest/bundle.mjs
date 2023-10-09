@@ -49987,8 +49987,7 @@ const xse = ({
   url: e
 }) => /* @__PURE__ */ ca("div", {
   style: {
-    height: "300px",
-    padding: "10px"
+    height: "300px"
   },
   children: [/* @__PURE__ */ mt("iframe", {
     src: e,
